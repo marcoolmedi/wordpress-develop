@@ -77,12 +77,8 @@ class Tests_Blocks_RenderReusable extends WP_UnitTestCase {
 	}
 
 	public function test_render() {
-		$parsed_block = array(
-			'blockName' => 'core/block',
-			'attrs'     => array( 'ref' => self::$block_id ),
-		);
-		$block        = new WP_Block( $parsed_block );
-		$output       = $block->render();
+		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( 'core/block' );
+		$output     = $block_type->render( array( 'ref' => self::$block_id ) );
 		$this->assertSame( '<p>Hello world!</p>', $output );
 	}
 
@@ -92,33 +88,21 @@ class Tests_Blocks_RenderReusable extends WP_UnitTestCase {
 	 * @ticket 52364
 	 */
 	public function test_render_subsequent() {
-		$parsed_block = array(
-			'blockName' => 'core/block',
-			'attrs'     => array( 'ref' => self::$block_id ),
-		);
-		$block        = new WP_Block( $parsed_block );
-		$output       = $block->render();
-		$output      .= $block->render();
+		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( 'core/block' );
+		$output     = $block_type->render( array( 'ref' => self::$block_id ) );
+		$output    .= $block_type->render( array( 'ref' => self::$block_id ) );
 		$this->assertSame( '<p>Hello world!</p><p>Hello world!</p>', $output );
 	}
 
 	public function test_ref_empty() {
-		$parsed_block = array(
-			'blockName' => 'core/block',
-			'attrs'     => array(),
-		);
-		$block        = new WP_Block( $parsed_block );
-		$output       = $block->render();
+		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( 'core/block' );
+		$output     = $block_type->render( array() );
 		$this->assertSame( '', $output );
 	}
 
 	public function test_ref_wrong_post_type() {
-		$parsed_block = array(
-			'blockName' => 'core/block',
-			'attrs'     => array( 'ref' => self::$post_id ),
-		);
-		$block        = new WP_Block( $parsed_block );
-		$output       = $block->render();
+		$block_type = WP_Block_Type_Registry::get_instance()->get_registered( 'core/block' );
+		$output     = $block_type->render( array( 'ref' => self::$post_id ) );
 		$this->assertSame( '', $output );
 	}
 }

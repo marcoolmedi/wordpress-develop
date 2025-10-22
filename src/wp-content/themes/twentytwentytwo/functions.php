@@ -45,21 +45,15 @@ if ( ! function_exists( 'twentytwentytwo_styles' ) ) :
 		$theme_version = wp_get_theme()->get( 'Version' );
 
 		$version_string = is_string( $theme_version ) ? $theme_version : false;
-
-		$suffix = SCRIPT_DEBUG ? '' : '.min';
-		$src    = 'style' . $suffix . '.css';
-
-		wp_enqueue_style(
+		wp_register_style(
 			'twentytwentytwo-style',
-			get_parent_theme_file_uri( $src ),
+			get_template_directory_uri() . '/style.css',
 			array(),
 			$version_string
 		);
-		wp_style_add_data(
-			'twentytwentytwo-style',
-			'path',
-			get_parent_theme_file_path( $src )
-		);
+
+		// Enqueue theme stylesheet.
+		wp_enqueue_style( 'twentytwentytwo-style' );
 	}
 
 endif;

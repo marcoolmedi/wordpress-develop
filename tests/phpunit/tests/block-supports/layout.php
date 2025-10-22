@@ -74,7 +74,7 @@ class Tests_Block_Supports_Layout extends WP_UnitTestCase {
 		$block_content = '<figure class="wp-block-image size-full"><img src="/my-image.jpg"/></figure>';
 		$expected      = '<figure class="wp-block-image size-full"><img src="/my-image.jpg"/></figure>';
 
-		$this->assertEqualHTML( $expected, wp_restore_image_outer_container( $block_content, $block ) );
+		$this->assertSame( $expected, wp_restore_image_outer_container( $block_content, $block ) );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class Tests_Block_Supports_Layout extends WP_UnitTestCase {
 		$block_content = '<figure class="wp-block-image alignright size-full"><img src="/my-image.jpg"/></figure>';
 		$expected      = '<div class="wp-block-image"><figure class="alignright size-full"><img src="/my-image.jpg"/></figure></div>';
 
-		$this->assertEqualHTML( $expected, wp_restore_image_outer_container( $block_content, $block ) );
+		$this->assertSame( $expected, wp_restore_image_outer_container( $block_content, $block ) );
 	}
 
 	/**
@@ -111,7 +111,7 @@ class Tests_Block_Supports_Layout extends WP_UnitTestCase {
 			),
 		);
 
-		$this->assertEqualHTML( $expected, wp_restore_image_outer_container( $block_image_html, $block ) );
+		$this->assertSame( $expected, wp_restore_image_outer_container( $block_image_html, $block ) );
 	}
 
 	/**
@@ -165,7 +165,7 @@ class Tests_Block_Supports_Layout extends WP_UnitTestCase {
 		$block_content = '<figure class="wp-block-image alignright size-full is-style-round my-custom-classname"><img src="/my-image.jpg"/></figure>';
 		$expected      = '<figure class="wp-block-image alignright size-full is-style-round my-custom-classname"><img src="/my-image.jpg"/></figure>';
 
-		$this->assertEqualHTML( $expected, wp_restore_image_outer_container( $block_content, $block ) );
+		$this->assertSame( $expected, wp_restore_image_outer_container( $block_content, $block ) );
 	}
 
 	/**

@@ -2593,8 +2593,6 @@ function comment_form( $args = array(), $post = null ) {
 		}
 	}
 
-	$original_fields = $fields;
-
 	/**
 	 * Filters the default comment form fields.
 	 *
@@ -2808,7 +2806,7 @@ function comment_form( $args = array(), $post = null ) {
 
 					echo $args['comment_notes_after'];
 
-				} elseif ( ! is_user_logged_in() || ! isset( $original_fields[ $name ] ) ) {
+				} elseif ( ! is_user_logged_in() ) {
 
 					if ( $first_field === $name ) {
 						/**

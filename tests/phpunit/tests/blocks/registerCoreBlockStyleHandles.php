@@ -15,9 +15,9 @@
 class Tests_Blocks_registerCoreBlockStyleHandles extends WP_UnitTestCase {
 
 	/**
-	 * @var WP_Styles|null
+	 * @var WP_Styles
 	 */
-	protected $original_wp_styles;
+	private $old_wp_styles;
 
 	/**
 	 * @var string
@@ -32,19 +32,19 @@ class Tests_Blocks_registerCoreBlockStyleHandles extends WP_UnitTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		global $wp_styles;
-		$this->original_wp_styles = $wp_styles;
-		$wp_styles                = null;
-		wp_styles();
+		$this->old_wp_styles = $GLOBALS['wp_styles'];
 
 		$this->includes_url = includes_url();
 
 		remove_action( 'wp_default_styles', 'wp_default_styles' );
+
+		if ( empty( $GLOBALS['wp_styles'] ) ) {
+			$GLOBALS['wp_styles'] = null;
+		}
 	}
 
 	public function tear_down() {
-		global $wp_styles;
-		$wp_styles = $this->original_wp_styles;
+		$GLOBALS['wp_styles'] = $this->old_wp_styles;
 
 		add_action( 'wp_default_styles', 'wp_default_styles' );
 
@@ -56,15 +56,10 @@ class Tests_Blocks_registerCoreBlockStyleHandles extends WP_UnitTestCase {
 	 *
 	 * @dataProvider data_block_data
 	 *
-	 * @covers ::register_core_block_style_handles
-	 * @covers ::wp_should_load_separate_core_block_assets
-	 *
 	 * @param string $name   The block name.
 	 * @param array  $schema The block's schema.
 	 */
 	public function test_wp_should_load_separate_core_block_assets_false( $name, $schema ) {
-		add_filter( 'should_load_separate_core_block_assets', '__return_false' );
-		$this->assertFalse( wp_should_load_separate_core_block_assets(), 'Core blocks are not expected to load separate assets' );
 		register_core_block_style_handles();
 
 		foreach ( self::STYLE_FIELDS as $style_field => $filename ) {
@@ -83,15 +78,11 @@ class Tests_Blocks_registerCoreBlockStyleHandles extends WP_UnitTestCase {
 	 *
 	 * @dataProvider data_block_data
 	 *
-	 * @covers ::register_core_block_style_handles
-	 * @covers ::wp_should_load_separate_core_block_assets
-	 *
 	 * @param string $name   The block name.
 	 * @param array  $schema The block's schema.
 	 */
 	public function test_wp_should_load_separate_core_block_assets_true( $name, $schema ) {
 		add_filter( 'should_load_separate_core_block_assets', '__return_true' );
-		$this->assertTrue( wp_should_load_separate_core_block_assets(), 'Core assets are expected to load separately' );
 		register_core_block_style_handles();
 
 		$wp_styles = $GLOBALS['wp_styles'];

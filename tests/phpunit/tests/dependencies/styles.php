@@ -327,11 +327,18 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 	/**
 	 * Test to make sure that inline styles attached to conditional
 	 * stylesheets are also conditional.
-	 *
-	 * @expectedDeprecated WP_Dependencies->add_data()
 	 */
 	public function test_conditional_inline_styles_are_also_conditional() {
-		$expected = '';
+		$expected = <<<CSS
+<!--[if IE]>
+<link rel='stylesheet' id='handle-css' href='http://example.com?ver=1' type='text/css' media='all' />
+<style id='handle-inline-css' type='text/css'>
+a { color: blue; }
+/*# sourceURL=handle-inline-css */
+</style>
+<![endif]-->
+
+CSS;
 		wp_enqueue_style( 'handle', 'http://example.com', array(), 1 );
 		wp_style_add_data( 'handle', 'conditional', 'IE' );
 		wp_add_inline_style( 'handle', 'a { color: blue; }' );
@@ -436,9 +443,6 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 	 * @covers ::wp_common_block_scripts_and_styles
 	 */
 	public function test_block_styles_for_editing_with_theme_support() {
-		// Override wp_load_classic_theme_block_styles_on_demand().
-		add_filter( 'should_load_separate_core_block_assets', '__return_false' );
-
 		add_theme_support( 'wp-block-styles' );
 
 		wp_default_styles( $GLOBALS['wp_styles'] );
@@ -475,9 +479,6 @@ class Tests_Dependencies_Styles extends WP_UnitTestCase {
 	 * @covers ::wp_common_block_scripts_and_styles
 	 */
 	public function test_block_styles_for_viewing_with_theme_support() {
-		// Override wp_load_classic_theme_block_styles_on_demand().
-		add_filter( 'should_load_separate_core_block_assets', '__return_false' );
-
 		add_theme_support( 'wp-block-styles' );
 
 		wp_default_styles( $GLOBALS['wp_styles'] );

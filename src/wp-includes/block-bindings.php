@@ -140,13 +140,11 @@ function get_block_bindings_source( string $source_name ) {
  */
 function get_block_bindings_supported_attributes( $block_type ) {
 	$block_bindings_supported_attributes = array(
-		'core/paragraph'          => array( 'content' ),
-		'core/heading'            => array( 'content' ),
-		'core/image'              => array( 'id', 'url', 'title', 'alt', 'caption' ),
-		'core/button'             => array( 'url', 'text', 'linkTarget', 'rel' ),
-		'core/post-date'          => array( 'datetime' ),
-		'core/navigation-link'    => array( 'url' ),
-		'core/navigation-submenu' => array( 'url' ),
+		'core/paragraph' => array( 'content' ),
+		'core/heading'   => array( 'content' ),
+		'core/image'     => array( 'id', 'url', 'title', 'alt', 'caption' ),
+		'core/button'    => array( 'url', 'text', 'linkTarget', 'rel' ),
+		'core/post-date' => array( 'datetime' ),
 	);
 
 	$supported_block_attributes =
